@@ -55,7 +55,6 @@ const ProductHighlightWrapper: FC<Props> = ({ children }) => {
     ]
 
     const sortedDiscountsList = discountsList.sort((a, b) => b.value - a.value)
-    console.log("PROMO ELEGIDA: ", sortedDiscountsList[0].list)
     return sortedDiscountsList[0].list
 
   }

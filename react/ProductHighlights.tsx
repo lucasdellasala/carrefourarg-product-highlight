@@ -14,7 +14,6 @@ const ProductHighlights: FC<ProductHighlightsProps> = ({
   const seller: ProductTypes.Seller | null = selectedSku
     ? getSeller(selectedSku)
     : null
-  console.log(product?.productName)
 
   let discountHighlights = seller?.commertialOffer?.discountHighlights ?? []
   let teasers = seller?.commertialOffer?.teasers ?? []
