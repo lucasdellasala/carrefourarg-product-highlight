@@ -14,15 +14,21 @@ const ProductHighlights: FC<ProductHighlightsProps> = ({
   const seller: ProductTypes.Seller | null = selectedSku
     ? getSeller(selectedSku)
     : null
+  console.log(product?.productName)
 
-  const discountHighlights = seller?.commertialOffer?.discountHighlights ?? []
-  const teasers = seller?.commertialOffer?.teasers ?? []
+  let discountHighlights = seller?.commertialOffer?.discountHighlights ?? []
+  let teasers = seller?.commertialOffer?.teasers ?? []
+  let clusterHighlights = product?.clusterHighlights ?? []
+
+  discountHighlights[0] == undefined ? discountHighlights = [{ name: "No discount highlight" }] : discountHighlights = discountHighlights
+  teasers[0] == undefined ? teasers = [{ name: "No teasers" }] : teasers = teasers
+  clusterHighlights[0] == undefined ? clusterHighlights = [{ name: "No cluster highlight", id: "No" }] : clusterHighlights = clusterHighlights
 
   const highlights = useMemo(() => {
-    const promotionInfo = [...discountHighlights, ...teasers]
+    const promotionInfo = [...discountHighlights, ...teasers, ...clusterHighlights]
 
     return promotionInfo
-  }, [teasers, discountHighlights])
+  }, [discountHighlights, teasers, clusterHighlights])
 
   if (!product) {
     return null
