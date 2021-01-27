@@ -25,7 +25,6 @@ const ProductHighlights: FC<ProductHighlightsProps> = ({
 
   const highlights = useMemo(() => {
     const promotionInfo = [...discountHighlights, ...teasers, ...clusterHighlights]
-    console.log(promotionInfo)
 
     return promotionInfo
   }, [discountHighlights, teasers, clusterHighlights])
