@@ -39,7 +39,7 @@ const ProductHighlightText: FC<Props> = ({ message = '', markers = [] }) => {
       const clusterHighlightsList = clusterHighlights?.split("-")
 
       const discountValue = (promotion: Array<string>): number => {
-        if (promotion.length == 1) {
+        if (promotion[0] !== "PROMO") {
           return 0
         }
         const percentaje: any = promotion?.[4]
@@ -66,7 +66,12 @@ const ProductHighlightText: FC<Props> = ({ message = '', markers = [] }) => {
       ]
 
       const sortedDiscountsList = discountsList.sort((a, b) => b.value - a.value)
-      return sortedDiscountsList[0].list
+
+      if (sortedDiscountsList[0].value != 0) {
+        return sortedDiscountsList[0].list
+      } else {
+        return null
+      }
     }
 
     const bestValue = bestPromotion()
