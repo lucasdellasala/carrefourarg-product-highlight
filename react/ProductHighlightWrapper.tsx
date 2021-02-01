@@ -18,26 +18,29 @@ const ProductHighlightWrapper: FC<Props> = ({ children }) => {
     return null
   }
 
+  //LOGICA DE PROMO
   const bestPromotion = () => {
-    const discountHighlights = value.highlight[0]?.name
-    const teasers = value.highlight[1]?.name
-    const clusterHighlights = value.highlight[2]?.name
+    const discountHighlights = value.highlight[0].name
+    const teasers = value.highlight[1].name
+    const clusterHighlights = value.highlight[2].name
 
-    const teasersList = teasers?.split("-")
-    const discountHighlightsList = discountHighlights?.split("-")
-    const clusterHighlightsList = clusterHighlights?.split("-")
-
-    const discountValue = (promotion: Array<string>): number => {
+    const discountValue = (promotion: any): number => {
+      if (promotion == undefined) {
+        return 0
+      }
       if (promotion[0] !== "PROMO") {
         return 0
       }
       const percentaje: any = promotion?.[4]
-      //@ts-ignore
       const listOfNumbers: any = promotion?.[3]?.toString().split(",")
       const numberOfProducts: number = listOfNumbers?.length
 
       return numberOfProducts * percentaje
     }
+
+    const teasersList = teasers.split("-") ?? ""
+    const discountHighlightsList = discountHighlights.split("-") ?? ""
+    const clusterHighlightsList = clusterHighlights.split("-") ?? ""
 
     const discountsList = [
       {
@@ -53,6 +56,10 @@ const ProductHighlightWrapper: FC<Props> = ({ children }) => {
         list: clusterHighlightsList
       }
     ]
+
+    if (discountsList[0].value == discountsList[1].value && discountsList[0].value == discountsList[2].value) {
+      return discountsList[0].list
+    }
 
     const sortedDiscountsList = discountsList.sort((a, b) => b.value - a.value)
 
