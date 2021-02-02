@@ -2,6 +2,7 @@ import React, { FC, useContext, ReactNode, useMemo } from 'react'
 import { useProduct, ProductTypes } from 'vtex.product-context'
 
 import { getSeller } from './modules/seller'
+import { bestPromoByType } from './utils/utils'
 interface ProductHighlightsProps {
   children: NonNullable<ReactNode>
 }
@@ -19,54 +20,9 @@ const ProductHighlights: FC<ProductHighlightsProps> = ({
   let teasers = seller?.commertialOffer?.teasers ?? []
   let clusterHighlights = product?.clusterHighlights ?? []
 
-  const bestPromoByType = (promotion: any) => {
-    if (promotion != undefined) {
-      if (promotion.length > 1) {
-        let bestPromo;
-        for (let i = 0; i < promotion.length; i++) {
-          const promo = promotion[i].name
-
-          const splitedPromo = promo.split("-")
-          const discount = discountValue(splitedPromo)
-          const lastDiscount = discountValue(bestPromo)
-          if (discount >= lastDiscount) {
-            bestPromo = promotion[i]
-          }
-        }
-
-        return [{ name: bestPromo.name, id: "1" }]
-      } else if (promotion.length == 1) {
-        return promotion
-      } else {
-        return [{ name: "No promo", id: "No" }]
-      }
-    } else {
-      return [{ name: "No promo", id: "No" }]
-    }
-  }
-
-  const discountValue = (promotion: any): number => {
-    if (promotion == undefined) {
-      return 0
-    }
-    if (promotion[0] !== "PROMO") {
-      return 0
-    }
-    const percentaje: any = promotion?.[4]
-    const listOfNumbers: any = promotion?.[3]?.toString().split(",")
-    const numberOfProducts: number = listOfNumbers?.length
-
-    return numberOfProducts * percentaje
-
-  }
-
   discountHighlights = bestPromoByType(discountHighlights)
   teasers = bestPromoByType(teasers)
   clusterHighlights = bestPromoByType(clusterHighlights)
-  //discountHighlights[0] == undefined ? discountHighlights = [{ name: "No discount highlight" }] : discountHighlights = [{ name: bestPromoByType(discountHighlights) }]
-  //teasers[0] == undefined ? teasers = [{ name: "No teasers" }] : teasers = [{ name: bestPromoByType(teasers) }]
-  //clusterHighlights[0] == undefined ? clusterHighlights = [{ name: "No cluster highlight", id: "No" }] : clusterHighlights = [{ name: bestPromoByType(clusterHighlights), id: "1" }]
-
 
   const highlights = useMemo(() => {
     const promotionInfo = [...discountHighlights, ...teasers, ...clusterHighlights]
